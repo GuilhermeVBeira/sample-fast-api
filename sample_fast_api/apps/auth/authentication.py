@@ -29,7 +29,7 @@ def validate_token(token: str = Depends(oauth2_scheme)):
 
 
 async def authenticate_user(form_data):
-    user = await User.query.where(User.name == form_data.username).gino.first()
+    user = await User.query.where(User.username == form_data.username).gino.first()
     exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Incorrect username or password",

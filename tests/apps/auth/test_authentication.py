@@ -31,7 +31,7 @@ def test_invalid_token():
 async def test_token_creation(mock_encode, client):
     mock_encode.return_value = "mock_hash"
     password_hash = pwd_context.hash("abc123")
-    new_user = await UserFactory().create(name="username", password=password_hash)
+    new_user = await UserFactory().create(username="username", password=password_hash)
     token = Token(new_user)
     assert token.create() == {"access_token": "mock_hash", "token_type": "bearer"}
 
@@ -39,7 +39,7 @@ async def test_token_creation(mock_encode, client):
 @pytest.mark.asyncio
 async def test_authenticate_user(client):
     password_hash = pwd_context.hash("abc123")
-    new_user = await UserFactory().create(name="username", password=password_hash)
+    new_user = await UserFactory().create(username="username", password=password_hash)
 
     RequestFormMock = namedtuple("OAuth2PasswordRequestForm", ["username", "password"])
     form_data = RequestFormMock("username", "abc123")
@@ -49,7 +49,7 @@ async def test_authenticate_user(client):
 
 @pytest.mark.asyncio
 async def test_authenticate_user_ivalid_password(client):
-    await UserFactory().create(name="username", password="unhased-password")
+    await UserFactory().create(username="username", password="unhased-password")
 
     RequestFormMock = namedtuple("OAuth2PasswordRequestForm", ["username", "password"])
     form_data = RequestFormMock("username", "abc123")
@@ -61,7 +61,7 @@ async def test_authenticate_user_ivalid_password(client):
 @pytest.mark.asyncio
 async def test_authenticate_user_ivalid_username(client):
     password_hash = pwd_context.hash("abc123")
-    await UserFactory().create(name="name", password=password_hash)
+    await UserFactory().create(username="name", password=password_hash)
 
     RequestFormMock = namedtuple("OAuth2PasswordRequestForm", ["username", "password"])
     form_data = RequestFormMock("username", "abc123")

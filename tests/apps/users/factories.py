@@ -1,4 +1,4 @@
-from sample_fast_api.apps.users.models import Address, User
+from sample_fast_api.apps.users.models import User
 
 
 class BaseFactory:
@@ -23,26 +23,11 @@ class BaseFactory:
         return await model.create(**data)
 
 
-class AddressFactory(BaseFactory):
-    class Meta:
-        model = Address
-
-    city = "City"
-    country = "Country"
-    complement = ""
-    number = "9999"
-    postal_code = "00000000"
-    state = "ST"
-    street = "Avenue"
-
-
 class UserFactory(BaseFactory):
     class Meta:
         model = User
 
-    address = AddressFactory
-    name = "User Name"
+    username = "username"
     email = "user1@email.com"
-    password = "abc123"
+    password = "supersecret"
     is_active = True
-    permissions = ["create", "update", "delete"]

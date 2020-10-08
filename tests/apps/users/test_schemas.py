@@ -1,38 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from sample_fast_api.apps.users.schemas import Address, User, UserCreate
-
-
-def test_address_string_conversion(address_data):
-    address = Address(**address_data)
-
-    expected_str = (
-        f"{address.street}, {address.number}, {address.postal_code}, {address.country}, {address.state}"
-    )
-
-    assert str(address) == expected_str
-
-
-def test_create_address(address_data):
-    address = Address(**address_data)
-
-    assert str(address.id) == address_data["id"]
-    assert address.city == address_data["city"]
-    assert address.complement == address_data["complement"]
-    assert address.country == address_data["country"]
-    assert address.number == address_data["number"]
-    assert address.postal_code == address_data["postal_code"]
-    assert address.state == address_data["state"]
-    assert address.street == address_data["street"]
-    assert address.Config.orm_mode is True
-
-
-def test_create_address_missing_required_atribute(address_data):
-    address_data.pop("city")
-
-    with pytest.raises(ValidationError):
-        Address(**address_data)
+from sample_fast_api.apps.users.schemas import User, UserCreate
 
 
 def test_create_user_missing_required_atribute(user_data):
@@ -63,7 +32,7 @@ def test_create_user_with_invalid_password_length(user_data):
 def test_user_string_conversion(user_data):
     user = User(**user_data)
 
-    expected_str = f"{user.id}, {user.name}, {user.email}"
+    expected_str = f"{user.id}, {user.username}, {user.email}"
 
     assert str(user) == expected_str
 
@@ -74,9 +43,7 @@ def test_create_user(user_data):
     assert str(user.id) == user_data["id"]
     assert user.email == user_data["email"]
     assert user.is_active == user_data["is_active"]
-    assert user.name == user_data["name"]
-    assert user.permissions == user_data["permissions"]
-    assert user.address
+    assert user.username == user_data["username"]
     assert user.Config.orm_mode is True
 
 
